@@ -19,7 +19,7 @@ import 'UserScreens/HomeScreen.dart';
 import 'UserScreens/ListView/CatListView.dart';
 import 'UserScreens/ListView/DogListView.dart';
 import 'UserScreens/Payment.dart';
-import 'UserScreens/SplashScreen.dart';
+import 'UserScreens/auth/SplashScreen.dart';
 import 'UserScreens/auth/ForgetPassword.dart';
 import 'UserScreens/auth/UserLogin.dart';
 import 'UserScreens/auth/UserRegistration.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import 'auth/UserLogin.dart';
+import 'UserLogin.dart';
 
 //since we used initState, the state of widget changes later so we use stful
 class Splash extends StatefulWidget {
