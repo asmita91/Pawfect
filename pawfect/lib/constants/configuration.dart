@@ -20,6 +20,7 @@ List<String> Description = [
   "Love is a four-legged word.",
   "Cuteness overload, \n am I right?",
   "Because its your Family!",
+  "Hi! I am Oscar \n\"The Meow\"",
   "Henlo! Woofcome"
 ];
 List<String> ImageVal = ["", "", "img_2.png", "img_3.png", ""];
@@ -37,6 +38,7 @@ List<Icon> icons = [
   )
 ];
 List<String> rows = ["row1", "row2", "row3"];
+
 List<Map> drawerItems = [
   {
     'icons': Icons.pets,
