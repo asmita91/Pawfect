@@ -4,7 +4,7 @@ import 'package:pawfect/ViewModel/CatViewModel.dart';
 import 'package:pawfect/model/catModel.dart';
 import 'package:provider/provider.dart';
 
-import '../Widgets/PageStackCat.dart';
+import '../../Widgets/PageStackCat.dart';
 
 class CatListView extends StatefulWidget {
   const CatListView({Key? key}) : super(key: key);

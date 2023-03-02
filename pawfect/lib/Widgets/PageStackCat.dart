@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../UserScreens/subScreenCat.dart';
+import '../UserScreens/subpages/subScreenCat.dart';
 import 'AppColumn.dart';
 
 class CreatePageStackCat extends StatelessWidget {
@@ -36,20 +36,20 @@ class CreatePageStackCat extends StatelessWidget {
           child: Stack(alignment: Alignment.topCenter, children: [
             Expanded(
               child: Container(
-                height: 250,
+                height: 150,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: index.isEven
                         ? Color.fromRGBO(218, 252, 253, 10)
                         : Color.fromRGBO(218, 218, 254, 10),
                     image: DecorationImage(
-                        fit: BoxFit.cover, image: NetworkImage(imageLink))),
+                        fit: BoxFit.contain, image: NetworkImage(imageLink))),
               ),
             ),
             Container(
               height: 100,
               width: 200,
-              margin: EdgeInsets.only(top: 155.0),
+              margin: EdgeInsets.only(top: 100.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.white,

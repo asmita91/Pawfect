@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../ViewModel/GlobalUIViewModel.dart';
-import '../ViewModel/auth_viewmodel.dart';
-import '../Widgets/AppIcon.dart';
+import '../../ViewModel/GlobalUIViewModel.dart';
+import '../../ViewModel/auth_viewmodel.dart';
+import '../../Widgets/AppIcon.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -120,7 +120,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   child: Text(
                     "Logout",
                     style: TextStyle(color: Colors.red),
-                  ))
+                  )),
             ],
           ),
         ),

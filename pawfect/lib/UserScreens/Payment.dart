@@ -1,92 +1,117 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:khalti/khalti.dart';
 
-class KhaltiPaymentPage extends StatefulWidget {
-  const KhaltiPaymentPage({Key? key}) : super(key: key);
+class KhaltiPayment extends StatefulWidget {
+  const KhaltiPayment({Key? key}) : super(key: key);
 
   @override
-  State<KhaltiPaymentPage> createState() => _KhaltiPaymentPageState();
+  State<KhaltiPayment> createState() => _KhaltiPaymentState();
 }
 
-class _KhaltiPaymentPageState extends State<KhaltiPaymentPage> {
-  TextEditingController amountController = TextEditingController();
-
-  getAmt() {
-    return int.parse(amountController.text) * 100;
-  }
-
+class _KhaltiPaymentState extends State<KhaltiPayment> {
+  TextEditingController phoneController = new TextEditingController();
+  TextEditingController pinCodeController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
         appBar: AppBar(
-          title: const Text("Khalti Payment Integration"),
+          title: Text(
+            "Khalti",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.purple,
         ),
-        body: Builder(
-            builder: (context) => Container(
-                  padding: const EdgeInsets.all(15),
-                  child: ListView(
-                    children: [
-                      const SizedBox(height: 15),
-                      TextField(
-                        controller: amountController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            labelText: "Enter amount to pay",
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: const BorderSide(color: Colors.red)),
-                          height: 50,
-                          color: Color(0xFF56328C),
-                          child: const Text(
-                            "Pay with Khalti",
-                            style: TextStyle(color: Colors.white, fontSize: 22),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              TextFormField(
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(labelText: "Phone number"),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: pinCodeController,
+                obscureText: true,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: "Pin Code "),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final initiationModel = await Khalti.service.initiatePayment(
+                    request: PaymentInitiationRequestModel(
+                        amount: 1000,
+                        mobile: phoneController.text,
+                        productIdentity: "pID",
+                        productName: "ProductName",
+                        transactionPin: pinCodeController.text,
+                        productUrl: "",
+                        additionalData: {}),
+                  );
+                  final otp = await showDialog(
+                      context: (context),
+                      barrierDismissible: false,
+                      builder: (context) {
+                        String? _otp;
+                        return AlertDialog(
+                          title: Text("Enter OTP"),
+                          content: TextField(
+                            onChanged: (v) => _otp = v,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(label: Text("OTP")),
                           ),
-                          onPressed: () {
-                            KhaltiScope.of(context).pay(
-                                config: PaymentConfig(
-                                  amount: getAmt(),
-                                  productIdentity: 'dells-sssssg5-g5510-2021',
-                                  productName: "Product Name",
-                                ),
-                                preferences: [
-                                  PaymentPreference.khalti,
-                                ],
-                                onSuccess: (su) {
-                                  const successsnackBar = SnackBar(
-                                    content: Text("Payment Successful"),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(successsnackBar);
-                                },
-                                onFailure: (fa) {
-                                  print("Payment Failed: ${fa.message}");
-                                  const failedsnackbar = SnackBar(
-                                    content: Text("Payment Failed"),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(failedsnackbar);
-                                },
-                                onCancel: () {
-                                  const cancelsnackbar = SnackBar(
-                                    content: Text("Payment Cancelled"),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(cancelsnackbar);
-                                });
-                          })
-                    ],
-                  ),
-                )));
+                          actions: [
+                            SimpleDialogOption(
+                              child: Text("Submit"),
+                              onPressed: () {
+                                Navigator.pop(context, _otp);
+                              },
+                            )
+                          ],
+                        );
+                      });
+                  if (otp != null) {
+                    try {
+                      final model = await Khalti.service.confirmPayment(
+                          request: PaymentConfirmationRequestModel(
+                              confirmationCode: otp,
+                              token: initiationModel.token,
+                              transactionPin: pinCodeController.text));
+                      showDialog(
+                          context: (context),
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                "Payment Successful",
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              content:
+                                  Text("Verification Token ${model.token}"),
+                            );
+                          });
+                    } catch (e) {
+                      ScaffoldMessenger.maybeOf(context)
+                          ?.showSnackBar(SnackBar(content: Text(e.toString())));
+                    }
+                  }
+                },
+                child: Text("Make Payment"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

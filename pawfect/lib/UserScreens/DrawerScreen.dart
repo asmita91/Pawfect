@@ -33,6 +33,27 @@ class _DrawerScreenState extends State<DrawerScreen> {
     _ui.loadState(false);
   }
 
+  void _showPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Privacy Policy'),
+          content: Text(
+              "Asmita Katel built the PAWFECT app as an Open Source app. This SERVICE is provided by Asmita Katel at no cost and is intended for use as is.This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at PAWFECT unless otherwise defined in this Privacy Policy."),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     _ui = Provider.of<GlobalUIViewModel>(context, listen: false);
@@ -84,16 +105,23 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         onTap: () {
                           switch (elements['title']) {
                             case 'Adoption':
-                              Navigator.pushNamed(context, '/adoption');
+                              Navigator.pushNamed(context, '/Adoption');
                               break;
                             case 'Payment':
                               Navigator.pushNamed(context, '/Payment');
                               break;
-                            case 'Favorites':
-                              Navigator.pushNamed(context, '/Favorites');
+                            case 'Favorite Dogs':
+                              Navigator.pushNamed(context, '/FavoriteDogs');
+                              break;
+
+                            case 'Favorites Cats':
+                              Navigator.pushNamed(context, '/FavoriteCats');
                               break;
                             case 'Profile':
                               Navigator.pushNamed(context, '/Profile');
+                              break;
+                            case 'Veterinary':
+                              Navigator.pushNamed(context, '/Veterinary');
                               break;
                             default:
                               break;
@@ -128,11 +156,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
                 SizedBox(width: 10),
                 InkWell(
-                  child: Text("Settings",
+                  child: Text("Privacy Policy",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   onTap: () {
-                    Navigator.of(context).pushNamed("/About");
+                    _showPopup();
                   },
                 ),
                 SizedBox(width: 10),

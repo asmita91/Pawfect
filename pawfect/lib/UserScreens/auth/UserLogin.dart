@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../ViewModel/GlobalUIViewModel.dart';
-import '../ViewModel/auth_viewmodel.dart';
-import '../services/NotificationService.dart';
+import '../../ViewModel/GlobalUIViewModel.dart';
+import '../../ViewModel/auth_viewmodel.dart';
+import '../../services/NotificationService.dart';
 
 class UserLogin extends StatefulWidget {
   const UserLogin({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class UserLogin extends StatefulWidget {
 class _UserLoginState extends State<UserLogin> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-  bool _obscureTextPassword = false;
+  bool _obscureTextPassword = true;
   final _formKey = GlobalKey<FormState>();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -59,11 +59,10 @@ class NotificationService {
       late AndroidBitmap<Object>? notificationImage;
       late AndroidBitmap<Object>? notificationLogo;
       try {
-        var imageLoader =
-            await getImageFilePathFromAssets("Assets/img.png", 'bigpicture');
+        var imageLoader = await getImageFilePathFromAssets(image, 'bigpicture');
         notificationImage = FilePathAndroidBitmap(imageLoader);
         var imageLoaderLogo =
-            await getImageFilePathFromAssets('Assets/img.png', 'smallpicture');
+            await getImageFilePathFromAssets("Assets/img.png", 'smallpicture');
         notificationLogo = FilePathAndroidBitmap(imageLoaderLogo);
         styleinformationDesign = BigPictureStyleInformation(
           notificationImage,

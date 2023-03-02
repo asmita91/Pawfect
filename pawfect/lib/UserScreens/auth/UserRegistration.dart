@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../ViewModel/GlobalUIViewModel.dart';
-import '../ViewModel/auth_viewmodel.dart';
-import '../model/user_model.dart';
-import '../services/NotificationService.dart';
+import '../../ViewModel/GlobalUIViewModel.dart';
+import '../../ViewModel/auth_viewmodel.dart';
+import '../../model/user_model.dart';
+import '../../services/NotificationService.dart';
 
 class UserRegistration extends StatefulWidget {
   const UserRegistration({Key? key}) : super(key: key);

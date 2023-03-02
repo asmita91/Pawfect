@@ -19,7 +19,7 @@ List<String> Description = [
   "You can't buy happiness, \n but you can rescue it.",
   "Love is a four-legged word.",
   "Cuteness overload, \n am I right?",
-  "Hi! I am Oscar \n\"The Meow\"",
+  "Because its your Family!",
   "Henlo! Woofcome"
 ];
 List<String> ImageVal = ["", "", "img_2.png", "img_3.png", ""];
@@ -43,6 +43,8 @@ List<Map> drawerItems = [
     'title': 'Adoption',
   },
   {'icons': Icons.attach_money_rounded, 'title': 'Payment'},
-  {'icons': Icons.favorite, 'title': 'Favorites'},
+  {'icons': Icons.favorite, 'title': 'Favorite Dogs'},
+  {'icons': Icons.favorite_outline_rounded, 'title': 'Favorites Cats'},
   {'icons': Icons.person, 'title': 'Profile'},
+  {'icons': Icons.healing, 'title': 'Veterinary'},
 ];

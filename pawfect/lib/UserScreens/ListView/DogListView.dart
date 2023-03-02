@@ -4,7 +4,7 @@ import 'package:pawfect/ViewModel/DogViewModel.dart';
 import 'package:pawfect/model/dogModel.dart';
 import 'package:provider/provider.dart';
 
-import '../Widgets/PageStack.dart';
+import '../../Widgets/PageStack.dart';
 
 class DogListView extends StatefulWidget {
   const DogListView({Key? key}) : super(key: key);
@@ -73,7 +73,7 @@ class MyPageViewController extends StatelessWidget {
 
     for (int i = 0; i <= dogs.length - 1; i++) {
       print("The total i is: -->$i");
-      if (i <= 1) {
+      if (i <= 3) {
         print("The IF value of  i is: $i");
         lessThan5.add(dogs[i]);
       } else {

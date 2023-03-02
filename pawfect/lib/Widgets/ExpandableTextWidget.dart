@@ -16,7 +16,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
 
   //if long text xa vane
   bool hiddenText = true;
-  double textHeight = 300; //yesma prblm aauna sakxa
+  double textHeight = 310; //yesma prblm aauna sakxa
 
   //check length of the text passed
   @override

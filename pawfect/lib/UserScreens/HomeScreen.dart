@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pawfect/UserScreens/CatListView.dart';
-import 'package:pawfect/UserScreens/DogListView.dart';
+import 'package:pawfect/UserScreens/ListView/CatListView.dart';
+import 'package:pawfect/UserScreens/ListView/DogListView.dart';
 import 'package:pawfect/constants/Colors.dart';
 import 'package:pawfect/constants/configuration.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -165,13 +163,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 unselectedLabelColor: Colors.grey,
                 isScrollable: true,
                 indicatorSize: TabBarIndicatorSize.label,
-                indicator: CircleTabIndicator(
-                    radius: 4,
-                    onColorChange: (Color color) {
-                      setState(() {
-                        _indicatorColor = color;
-                      });
-                    }),
+                indicator: CircleTabIndicator(colors: Colors.black, radius: 4),
                 tabs: [
                   Tab(text: "Dog"),
                   Tab(text: "Cat"),
@@ -181,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           SizedBox(height: 10),
           Container(
-            height: 600,
+            height: 480,
             child: TabBarView(
               controller: _tabController,
               children: [DogListView(), CatListView()],
@@ -284,48 +276,28 @@ class Carousel_Container extends StatelessWidget {
 }
 
 class CircleTabIndicator extends Decoration {
-  final double radius;
-  final Function(Color) onColorChange;
-
-  CircleTabIndicator({
-    required this.radius,
-    required this.onColorChange,
-  });
-
+  final Color colors;
+  double radius;
+  CircleTabIndicator({required this.colors, required this.radius});
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _CirclePainter(radius: radius, onColorChange: onColorChange);
+// TODO: implement createBoxPainter
+    return _CirclePainter(colors: Colors.black, radius: radius);
   }
 }
 
 class _CirclePainter extends BoxPainter {
-  final double radius;
-  final Function(Color) onColorChange;
-
-  _CirclePainter({
-    required this.radius,
-    required this.onColorChange,
-  });
-
+  final Color colors;
+  double radius;
+  _CirclePainter({required this.colors, required this.radius});
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    final color = Color.fromARGB(
-      255,
-      Random().nextInt(256), // red value
-      Random().nextInt(256), // green value
-      Random().nextInt(256), // blue value
-    );
-    onColorChange(color);
-
-    final _paint = Paint()
-      ..color = color
-      ..isAntiAlias = true;
-
-    final circleOffset = Offset(
-      configuration.size!.width / 2 - radius / 2,
-      configuration.size!.height - radius,
-    );
-
+    Paint _paint = Paint();
+    _paint.color = colors;
+    _paint.isAntiAlias = true;
+    final Offset circleOffset = Offset(
+        configuration.size!.width / 2 - radius / 2,
+        configuration.size!.height - radius);
     canvas.drawCircle(offset + circleOffset, radius, _paint);
   }
 }

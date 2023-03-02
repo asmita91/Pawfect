@@ -1,122 +1,83 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pawfect/ViewModel/DogViewModel.dart';
+import 'package:pawfect/ViewModel/CatViewModel.dart';
 import 'package:provider/provider.dart';
 
-import '../ViewModel/GlobalUIViewModel.dart';
-import '../ViewModel/SingleDogViewModel.dart';
-import '../ViewModel/auth_viewmodel.dart';
-import '../Widgets/AppColumn.dart';
-import '../Widgets/AppIcon.dart';
-import '../Widgets/ExpandableTextWidget.dart';
-import '../model/favModel.dart';
+import '../../ViewModel/GlobalUIViewModel.dart';
+import '../../ViewModel/auth_viewmodel.dart';
+import '../../Widgets/AppColumn.dart';
+import '../../Widgets/AppIcon.dart';
+import '../../Widgets/ExpandableTextWidget.dart';
+import '../../model/favCatModel.dart';
 
-class SubScreen extends StatefulWidget {
+class SubScreenCat extends StatefulWidget {
   final int? index;
-  final String? dogName;
-  final String? dogDescription;
+  final String? catName;
+  final String? catDescription;
   final String? imageLink;
   final String? breed;
   final String? color;
   final int? price;
 
-  SubScreen(this.index, this.dogName, this.dogDescription, this.imageLink,
+  SubScreenCat(this.index, this.catName, this.catDescription, this.imageLink,
       this.price, this.breed, this.color);
 
   @override
-  State<SubScreen> createState() => _SubScreenState();
+  State<SubScreenCat> createState() => _SubScreenCatState();
 }
 
-class _SubScreenState extends State<SubScreen> {
-  late DogViewModel _dogViewModel;
+class _SubScreenCatState extends State<SubScreenCat> {
+  late CatViewModel _catViewModel;
   var _currentPageValue = 0.0;
-  PageController pageController = PageController(viewportFraction: 0.85);
+  PageController pageControllerCat = PageController(viewportFraction: 0.85);
   int _count = 1;
-
+  bool clicked = false;
   late GlobalUIViewModel _ui;
-  late AuthViewModel _authViewModel;
-  String? dogId;
-  late SingleDogViewModel _singleDogViewModel;
+  late AuthViewModel _auth;
+  PageController pageController = PageController(viewportFraction: 0.85);
+  Future<void> saveFavoriteCat() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final data = FavoriteCatModel(
+      userId: "1",
+      catId: '1',
+      catgName: widget.catName!,
+      imageUrl: widget.imageLink!,
+      breed: widget.breed!,
+    );
+
+    db.collection("favCat").add(data.toJson()).then((value) {
+      print("Added Data with ID: ${value.id}");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Container(
+        child: Text(
+          "Cat Added to Favorites",
+          style: TextStyle(color: Colors.white),
+        ),
+      )));
+    });
+  }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _singleDogViewModel =
-          Provider.of<SingleDogViewModel>(context, listen: false);
-      _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-      _ui = Provider.of<GlobalUIViewModel>(context, listen: false);
-      final args = ModalRoute.of(context)!.settings.arguments.toString();
-      _dogViewModel = Provider.of<DogViewModel>(context, listen: false);
-      _dogViewModel.getDog();
-      print("The Final Place -->${_dogViewModel.getDog()}");
-      setState(() {
-        dogId = args;
-      });
-      print(args);
-      getData(args);
-    });
+    _catViewModel = Provider.of<CatViewModel>(context, listen: false);
+    _catViewModel.getCat();
+    print("The Cat -->${_catViewModel.getCat()}");
     super.initState();
-    pageController.addListener(() {
+    pageControllerCat.addListener(() {
       setState(() {
-        _currentPageValue = pageController.page!;
+        _currentPageValue = pageControllerCat.page!;
       });
     });
-  }
-
-  Future<void> getData(String dogId) async {
-    _ui.loadState(true);
-    try {
-      await _authViewModel.getFavoritesDog();
-      await _singleDogViewModel.getDogs(dogId);
-    } catch (e) {}
-    _ui.loadState(false);
-  }
-
-  Future<void> favoritePressed(FavoriteModel? isFavorite, String dogId) async {
-    _ui.loadState(true);
-    try {
-      await _authViewModel.favoriteAction(isFavorite, dogId);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Favorite updated.")));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Something went wrong. Please try again.")));
-      print(e);
-    }
-    _ui.loadState(false);
   }
 
   @override
   Widget build(BuildContext context) {
-    var dog = context.watch<DogViewModel>().dog;
+    var cat = context.watch<CatViewModel>().cat;
     int weight = 0;
-    return Consumer2<SingleDogViewModel, AuthViewModel>(
-        builder: (context, singleDogVM, authVm, child) {
-      return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.black54,
-            actions: [
-              Builder(builder: (context) {
-                FavoriteModel? isFavorite;
-                try {
-                  isFavorite = authVm.favorites.firstWhere(
-                      (element) => element.dogId == singleDogVM.dog!.dogId);
-                } catch (e) {}
-
-                return IconButton(
-                    onPressed: () {
-                      print(singleDogVM.dog!.dogId!);
-                      favoritePressed(isFavorite, singleDogVM.dog!.dogId!);
-                    },
-                    icon: Icon(
-                      Icons.favorite,
-                      color: isFavorite != null ? Colors.red : Colors.white,
-                    ));
-              })
-            ],
-          ),
-          backgroundColor: Color(0xFFf5f5f4),
+    return SafeArea(
+      child: Scaffold(
           body: Stack(children: [
             Positioned(
                 left: 0,
@@ -127,7 +88,7 @@ class _SubScreenState extends State<SubScreen> {
                     height: MediaQuery.of(context).size.height / 2.2,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                             image: NetworkImage(widget.imageLink!))))),
             Positioned(
                 top: MediaQuery.of(context).size.width * 0.1,
@@ -140,7 +101,7 @@ class _SubScreenState extends State<SubScreen> {
                     ],
                   ),
                   onTap: () {
-                    Navigator.of(context).pop("/SubPage");
+                    Navigator.of(context).pop("/SubPageCat");
                     // MyConstants.holdNavigatePlaceDetails = null;
                     // Navigator.of(context).pop("/SubPages");
                   },
@@ -177,13 +138,13 @@ class _SubScreenState extends State<SubScreen> {
                           Expanded(
                             child: SingleChildScrollView(
                               child: ExpandableTextWidget(
-                                Des_text: widget.dogDescription!,
+                                Des_text: widget.catDescription!,
                               ),
                             ),
                           ),
                           Center(
                             child: AppColumn(
-                              Name: widget.dogName!,
+                              Name: widget.catName!,
                               price: widget.price!,
                               color: widget.color!,
                               breed: widget.breed!,
@@ -217,6 +178,18 @@ class _SubScreenState extends State<SubScreen> {
                             borderRadius: BorderRadius.circular(20),
                             color: Color.fromRGBO(191, 134, 143, 30),
                           ),
+                          child: InkWell(
+                            onTap: () {
+                              saveFavoriteCat();
+                              setState(() {
+                                clicked = !clicked;
+                              });
+                            },
+                            child: Icon(Icons.favorite,
+                                color: clicked
+                                    ? Color.fromRGBO(128, 0, 0, 10)
+                                    : Colors.white),
+                          ),
                         ),
                         Expanded(
                             child: Container(
@@ -236,7 +209,7 @@ class _SubScreenState extends State<SubScreen> {
                         )),
                       ],
                     ),
-                  ))));
-    });
+                  )))),
+    );
   }
 }

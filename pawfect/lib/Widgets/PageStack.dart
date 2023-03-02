@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../UserScreens/SubScreenDog.dart';
+import '../UserScreens/subpages/subScreen.dart';
 import 'AppColumn.dart';
 
 class CreatePageStack extends StatelessWidget {
@@ -36,29 +36,31 @@ class CreatePageStack extends StatelessWidget {
           child: Stack(alignment: Alignment.topCenter, children: [
             Expanded(
               child: Container(
-                height: 250,
+                height: 150,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: index.isEven
                         ? Color.fromRGBO(255, 255, 187, 10)
                         : Color.fromRGBO(195, 223, 195, 10),
                     image: DecorationImage(
-                        fit: BoxFit.cover, image: NetworkImage(imageLink))),
+                        fit: BoxFit.contain, image: NetworkImage(imageLink))),
               ),
             ),
             Container(
               height: 100,
               width: 200,
-              margin: EdgeInsets.only(top: 155.0),
+              margin: EdgeInsets.only(top: 100.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.white,
               ),
-              child: AppColumn(
-                Name: dogName,
-                breed: breed,
-                color: color,
-                price: price,
+              child: Center(
+                child: AppColumn(
+                  Name: dogName,
+                  breed: breed,
+                  color: color,
+                  price: price,
+                ),
               ),
             ),
           ]),

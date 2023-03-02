@@ -61,6 +61,9 @@ class DogRepository with ChangeNotifier {
   Future<bool> removeDog(String dogId, String userId) async {
     try {
       final response = await dogRef.doc(dogId).get();
+      if (response == null) {
+        return false;
+      }
       if (response.data()!.userId != userId) {
         return false;
       }
@@ -71,6 +74,20 @@ class DogRepository with ChangeNotifier {
       rethrow;
     }
   }
+
+  // Future<bool> removeDog(String dogId, String userId) async {
+  //   try {
+  //     final response = await dogRef.doc(dogId).get();
+  //     if (response.data()!.userId != userId) {
+  //       return false;
+  //     }
+  //     await dogRef.doc(dogId).delete();
+  //     return true;
+  //   } catch (err) {
+  //     print(err);
+  //     rethrow;
+  //   }
+  // }
 
   Future<List<QueryDocumentSnapshot<DogModel>>> getMyDogs(String userId) async {
     try {
